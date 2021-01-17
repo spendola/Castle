@@ -2,14 +2,6 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
-import PIL.Image
-import numpy as np
-import pymysql
-import zlib
-import json
-import io
-import gzip
-import PlateRecognition as PlateRecognition
 
 
 # Service Definition
