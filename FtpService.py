@@ -69,7 +69,7 @@ def main():
 	handler.tls_data_required = True
 
 	# Instantiate FTP server class and listen on 0.0.0.0:2121
-	address = ('', 2121)
+	address = ("127.0.0.1", 2121)
 	server = FTPServer(address, handler)
 
 	# set a limit for connections
