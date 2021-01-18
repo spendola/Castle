@@ -49,7 +49,7 @@ def main():
 	# Define a new user having full r/w permissions and a read-only
 	# anonymous user
 	authorizer.add_user('intesla', 'cata2016', '/home/ftp/', perm='elradfmwMT')
-	#authorizer.add_anonymous(os.getcwd())
+	authorizer.add_anonymous(os.getcwd())
 
 	# Instantiate FTP handler class
 	handler = MyHandler
@@ -65,8 +65,8 @@ def main():
 	#handler.passive_ports = range(60000, 65535)
 
     # requires SSL for both control and data channel
-	#handler.tls_control_required = True
-	#handler.tls_data_required = True
+	handler.tls_control_required = True
+	handler.tls_data_required = True
 
 	# Instantiate FTP server class and listen on 0.0.0.0:2121
 	address = ('', 2121)
