@@ -56,7 +56,7 @@ def main():
 	handler.authorizer = authorizer
 
 	# Define a customized banner (string returned when client connects)
-	handler.banner = "pyftpdlib based ftpd ready."
+	handler.banner = "Castle Server\nDeveloped by Theorical.net and Intesla.cl"
 
 	# Specify a masquerade address and the range of ports to use for
 	# passive connections.  Decomment in case you're behind a NAT.
