@@ -3,8 +3,7 @@ import os
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-from pyftpdlib.authorizers import UnixAuthorizer
-from pyftpdlib.filesystems import UnixFilesystem
+
 
 class MyHandler(FTPHandler):
 
@@ -45,7 +44,7 @@ class MyHandler(FTPHandler):
 
 def main():
 	# Instantiate a dummy authorizer for managing 'virtual' users
-	authorizer = UnixAuthorizer(rejected_users=["root"], require_valid_shell=True)
+	authorizer = DummyAuthorizer()
 
 	# Define a new user having full r/w permissions and a read-only
 	# anonymous user
@@ -56,7 +55,6 @@ def main():
 	handler = MyHandler
 	handler.certfile = 'keycert.pem'
 	handler.authorizer = authorizer
-	handler.abstracted_fs = UnixFilesystem
 
 	# Define a customized banner (string returned when client connects)
 	handler.banner = "Castle Server\nDeveloped by Theorical.net and Intesla.cl"
