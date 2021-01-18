@@ -8,7 +8,7 @@ from pyftpdlib.servers import FTPServer
 class MyHandler(FTPHandler):
 
     def on_connect(self):
-        print "%s:%s connected" % (self.remote_ip, self.remote_port)
+        print("New Connection: " + str(self.remote_ip))
 
     def on_disconnect(self):
         # do something when client disconnects
