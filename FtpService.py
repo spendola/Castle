@@ -49,10 +49,11 @@ def main():
 	# Define a new user having full r/w permissions and a read-only
 	# anonymous user
 	authorizer.add_user('intesla', 'cata2016', '/home/ftp/', perm='elradfmwMT')
-	authorizer.add_anonymous(os.getcwd())
+	#authorizer.add_anonymous(os.getcwd())
 
 	# Instantiate FTP handler class
 	handler = MyHandler
+	hangler.certfile = 'keycert.pem'
 	handler.authorizer = authorizer
 
 	# Define a customized banner (string returned when client connects)
