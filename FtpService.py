@@ -3,7 +3,8 @@ import os
 from pyftpdlib.authorizers import DummyAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
-
+from pyftpdlib.authorizers import UnixAuthorizer
+from pyftpdlib.filesystems import UnixFilesystem
 
 class MyHandler(FTPHandler):
 
