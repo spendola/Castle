@@ -53,7 +53,7 @@ def main():
 
 	# Instantiate FTP handler class
 	handler = MyHandler
-	hangler.certfile = 'keycert.pem'
+	handler.certfile = 'keycert.pem'
 	handler.authorizer = authorizer
 
 	# Define a customized banner (string returned when client connects)
