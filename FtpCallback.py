@@ -1,6 +1,10 @@
 #!/usr/bin/python
 import subprocess
 import sys
+import urllib
+import urllib.request
+import json
+import ssl
 
 line = sys.argv[1]
 start = line.find("/files")
@@ -11,3 +15,9 @@ print(filename)
 output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
 print(output)
 
+if("No license plates found" not in output):
+	context = ssl._create_unverified_context()
+	post_data = urllib.parse.urlencode({"owner":"intesla_test", "activity":output}).encode('utf-8')
+	x = urllib.request.urlopen(url="http://www.pendola.net/api/castleapi.php", data=post_data, context=context, timeout=timeout)
+	html = x.read().decode("utf-8")
+	print(html)
