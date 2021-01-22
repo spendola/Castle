@@ -1,27 +1,6 @@
-#!flask/bin/python
-from flask import Flask
-from flask import request
-from flask import jsonify
+import os
+from sh import tail
 
 
-# Service Definition
-app = Flask(__name__)
-@app.route('/', methods = ['POST'])
-
-def main():
-	
-	try:
-		data = request.get_data()
-		data = bytearray(data)
-		data = np.asarray(data, dtype=np.uint8)
-		data = data.reshape(800, 600)
-		return "good_image"
-	except:
-		return "bad_image_shape"
-		
-	
-
-if __name__ == "__main__":
-	print("Initializing Castle")
-	Preload()
-	app.run(host="0.0.0.0", port=9000)
+for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
+	print(line)
