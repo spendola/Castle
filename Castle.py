@@ -26,7 +26,7 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 		filename = "/home/castle/ftp" + line[start:end-1]
 
 		print(filename)
-		try:
+		if(".jpg" in filename):
 			output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
 			if("No license plates found" in output):
 				output = ""
@@ -43,7 +43,3 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 				html = x.read().decode("utf-8")
 				print(html)
 				
-			
-		except:
-			print("ouch... that wasn't an image")
-			pass
