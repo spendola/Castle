@@ -32,7 +32,7 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 				output = ""
 			
 			
-			detection = self.detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, minimum_percentage_probability=30)
+			detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, minimum_percentage_probability=30)
 			for eachItem in detection:
 				output = output + "\n" + eachItem["name"] + " (" + eachItem["box_points"] + ")"
 			
