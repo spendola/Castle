@@ -5,9 +5,20 @@ import urllib.request
 import json
 import ssl
 import os
+import imageai.Detection
 from sh import tail
 
+# initialization of imageai
+localpath = os.path.dirname(os.path.realpath(__file__))
+modelpath = os.path.join(self.localpath, "models/resnet50_coco_best_v2.0.1.h5")
 
+detector = imageai.Detection.ObjectDetection()
+detector.setModelTypeAsRetinaNet()
+detector.setModelPath(self.modelpath)
+detector.loadModel(detection_speed="fast")
+custom_objects = detector.CustomObjects(person=True, sports_ball=True)
+		
+		
 for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 	if("OK UPLOAD" in line):
 		start = line.find("/files")
