@@ -21,6 +21,6 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 		if("No license plates found" not in output):
 			context = ssl._create_unverified_context()
 			post_data = urllib.parse.urlencode({"owner":"intesla_test", "activity":output}).encode('utf-8')
-			x = urllib.request.urlopen(url="http://www.pendola.net/api/castleapi.php", data=post_data, context=context, timeout=timeout)
+			x = urllib.request.urlopen(url="http://www.pendola.net/api/castleapi.php", data=post_data, context=context, timeout=15)
 			html = x.read().decode("utf-8")
 			print(html)
