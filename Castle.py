@@ -10,6 +10,14 @@ import imageai.Detection
 import ftplib
 from sh import tail
 
+def SendActivity(message, owner):
+	context = ssl._create_unverified_context()
+	post_data = urllib.parse.urlencode({"key":"1338", "owner":owner, "message":message}).encode('utf-8')
+	x = urllib.request.urlopen(url="http://www.intesla.cl/api/castleapi.php", data=post_data, context=context, timeout=15)
+	html = x.read().decode("utf-8")
+	print(html)
+	
+
 # initialization of imageai
 localpath = os.path.dirname(os.path.realpath(__file__))
 modelpath = os.path.join(localpath, "models/resnet50_coco_best_v2.1.0.h5")
@@ -21,7 +29,8 @@ detector.loadModel(detection_speed="fast")
 custom_objects = detector.CustomObjects(person=True)
 		
 counter = 0	
-print("entering listen mode")	
+print("entering listen mode")
+SendActivity("initializing service", "intesla_test")	
 for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 	if("OK UPLOAD" in line):
 		start = line.find("/files")
@@ -42,11 +51,8 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 			output = output + "[ftplink:" + str(counter) + ".jpg]" 
 			if(len(output) > 1 ):
 				print("Sending: " + output)
-				context = ssl._create_unverified_context()
-				post_data = urllib.parse.urlencode({"key":"1338", "owner":"intesla_test", "message":output}).encode('utf-8')
-				x = urllib.request.urlopen(url="http://www.intesla.cl/api/castleapi.php", data=post_data, context=context, timeout=15)
-				html = x.read().decode("utf-8")
-				print(html)
+				SendActivity("output", "intesla_test")
+
 				
 				session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
 				file = open(outfile, "rb")
