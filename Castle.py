@@ -5,7 +5,9 @@ import urllib.request
 import json
 import ssl
 import os
+import cv2
 import imageai.Detection
+import ftplib
 from sh import tail
 
 # initialization of imageai
@@ -15,31 +17,40 @@ modelpath = os.path.join(localpath, "models/resnet50_coco_best_v2.1.0.h5")
 detector = imageai.Detection.ObjectDetection()
 detector.setModelTypeAsRetinaNet()
 detector.setModelPath(modelpath)
-detector.loadModel()
+detector.loadModel(detection_speed="fast")
 custom_objects = detector.CustomObjects(person=True)
 		
-		
+counter = 0	
+print("entering listen mode")	
 for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 	if("OK UPLOAD" in line):
 		start = line.find("/files")
 		end = line.find(",", start)
 		filename = "/home/castle/ftp" + line[start:end-1]
 
-		print(filename)
+		print("[" + filename + "]")
 		if(".jpg" in filename):
+			counter = counter + 1
+			outfile = "/home/castle/ftp/" + str(counter) + ".jpg"
 			output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
 			if("No license plates found" in output):
 				output = ""
-			
-			
-			detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, minimum_percentage_probability=30)
+						
+			detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, output_image_path=outfile,  minimum_percentage_probability=30)
 			for eachItem in detection:
-				output = output + "\n" + eachItem["name"] + " (" + eachItem["box_points"] + ")"
-			
+				output = output + eachItem["name"] + " (" + ",".join([str(x) for x in eachItem["box_points"]]) + "); "
+			output = output + "[ftplink:" + str(counter) + ".jpg]" 
 			if(len(output) > 1 ):
+				print("Sending: " + output)
 				context = ssl._create_unverified_context()
-				post_data = urllib.parse.urlencode({"owner":"intesla_test", "activity":output}).encode('utf-8')
-				x = urllib.request.urlopen(url="http://www.pendola.net/api/castleapi.php", data=post_data, context=context, timeout=15)
+				post_data = urllib.parse.urlencode({"key":"1338", "owner":"intesla_test", "message":output}).encode('utf-8')
+				x = urllib.request.urlopen(url="http://www.intesla.cl/api/castleapi.php", data=post_data, context=context, timeout=15)
 				html = x.read().decode("utf-8")
 				print(html)
 				
+				session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
+				file = open(outfile, "rb")
+				session.storbinary("STOR " + str(counter) + ".jpg", file)
+				file.close()
+				session.quit()
+
