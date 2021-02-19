@@ -30,7 +30,7 @@ custom_objects = detector.CustomObjects(person=True)
 		
 counter = 0	
 print("entering listen mode")
-SendActivity("intesla_test", "info", output)	
+SendActivity("intesla_test", "info", "initializing service")	
 for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 	if("OK UPLOAD" in line):
 		start = line.find("/files")
