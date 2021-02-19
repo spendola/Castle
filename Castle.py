@@ -10,9 +10,9 @@ import imageai.Detection
 import ftplib
 from sh import tail
 
-def SendActivity(message, owner):
+def SendActivity(client, level, message):
 	context = ssl._create_unverified_context()
-	post_data = urllib.parse.urlencode({"key":"1338", "owner":owner, "message":message}).encode('utf-8')
+	post_data = urllib.parse.urlencode({"key":"1338", "client":client, "level":level, "message":message}).encode('utf-8')
 	x = urllib.request.urlopen(url="http://www.intesla.cl/api/castleapi.php", data=post_data, context=context, timeout=15)
 	html = x.read().decode("utf-8")
 	print(html)
@@ -30,7 +30,7 @@ custom_objects = detector.CustomObjects(person=True)
 		
 counter = 0	
 print("entering listen mode")
-SendActivity("initializing service", "intesla_test")	
+SendActivity("intesla_test", "info", output)	
 for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 	if("OK UPLOAD" in line):
 		start = line.find("/files")
@@ -51,7 +51,7 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 			output = output + "[ftplink:" + str(counter) + ".jpg]" 
 			if(len(output) > 1 ):
 				print("Sending: " + output)
-				SendActivity("output", "intesla_test")
+				SendActivity("intesla_test", "warning", output)
 
 				
 				session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
