@@ -48,15 +48,16 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 			detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, output_image_path=outfile,  minimum_percentage_probability=30)
 			for eachItem in detection:
 				output = output + eachItem["name"] + " (" + ",".join([str(x) for x in eachItem["box_points"]]) + "); "
-			output = output + "[ftplink:" + str(counter) + ".jpg]" 
+			 
 			if(len(output) > 1 ):
+				output = output + "[ftplink:" + str(counter) + ".jpg]"
 				print("Sending: " + output)
 				SendActivity("intesla_test", "warning", output)
 
 				
-				session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
-				file = open(outfile, "rb")
-				session.storbinary("STOR " + str(counter) + ".jpg", file)
-				file.close()
-				session.quit()
+				#session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
+				#file = open(outfile, "rb")
+				#session.storbinary("STOR " + str(counter) + ".jpg", file)
+				#file.close()
+				#session.quit()
 
