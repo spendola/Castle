@@ -49,10 +49,10 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 				response = requests.post('https://api.platerecognizer.com/v1/plate-reader/', data=dict(regions=regions), files=dict(upload=fp), headers={'Authorization': alprtoken})
 			pprint(response.json())
 			
-			outfile = "/home/castle/ftp/" + str(counter) + ".jpg"
-			output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
-			if("No license plates found" in output):
-				output = ""
+			#outfile = "/home/castle/ftp/" + str(counter) + ".jpg"
+			#output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
+			#if("No license plates found" in output):
+			#	output = ""
 						
 			detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, output_image_path=outfile,  minimum_percentage_probability=30)
 			for eachItem in detection:
@@ -70,24 +70,3 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 				#file.close()
 				#session.quit()
 
-
-# pip install requests
-import requests
-from pprint import pprint
-regions = ['gb', 'it'] # Change to your country
-with open('/path/to/car.jpg', 'rb') as fp:
-    response = requests.post(
-        'https://api.platerecognizer.com/v1/plate-reader/',
-        data=dict(regions=regions),  # Optional
-        files=dict(upload=fp),
-        headers={'Authorization': 'Token API_TOKEN'})
-pprint(response.json())
-
-# Calling with a custom engine configuration
-import json
-with open('/path/to/car.jpg', 'rb') as fp:
-    response = requests.post(
-        'https://api.platerecognizer.com/v1/plate-reader/',
-        data=dict(regions=['au'], config=json.dumps(dict(region="strict"))),  # Optional
-        files=dict(upload=fp),
-        headers={'Authorization': 'Token API_TOKEN'})
