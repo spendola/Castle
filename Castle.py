@@ -9,6 +9,8 @@ import cv2
 import imageai.Detection
 import ftplib
 from sh import tail
+import requests
+from pprint import pprint
 
 def SendActivity(client, level, message):
 	context = ssl._create_unverified_context()
@@ -17,6 +19,8 @@ def SendActivity(client, level, message):
 	html = x.read().decode("utf-8")
 	print(html)
 	
+regions = ['gb', 'it'] 
+alprtoken = "mytoken"
 
 # initialization of imageai
 localpath = os.path.dirname(os.path.realpath(__file__))
@@ -40,6 +44,11 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 		print("[" + filename + "]")
 		if(".jpg" in filename):
 			counter = counter + 1
+			
+			with open(filename, 'rb') as fp:
+				response = requests.post('https://api.platerecognizer.com/v1/plate-reader/', data=dict(regions=regions), files=dict(upload=fp), headers={'Authorization': alprtoken})
+			pprint(response.json())
+			
 			outfile = "/home/castle/ftp/" + str(counter) + ".jpg"
 			output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
 			if("No license plates found" in output):
@@ -61,3 +70,24 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 				#file.close()
 				#session.quit()
 
+
+# pip install requests
+import requests
+from pprint import pprint
+regions = ['gb', 'it'] # Change to your country
+with open('/path/to/car.jpg', 'rb') as fp:
+    response = requests.post(
+        'https://api.platerecognizer.com/v1/plate-reader/',
+        data=dict(regions=regions),  # Optional
+        files=dict(upload=fp),
+        headers={'Authorization': 'Token API_TOKEN'})
+pprint(response.json())
+
+# Calling with a custom engine configuration
+import json
+with open('/path/to/car.jpg', 'rb') as fp:
+    response = requests.post(
+        'https://api.platerecognizer.com/v1/plate-reader/',
+        data=dict(regions=['au'], config=json.dumps(dict(region="strict"))),  # Optional
+        files=dict(upload=fp),
+        headers={'Authorization': 'Token API_TOKEN'})
