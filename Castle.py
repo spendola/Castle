@@ -20,7 +20,7 @@ def SendActivity(client, level, message):
 	print(html)
 	
 regions = ['gb', 'it'] 
-alprtoken = "mytoken"
+alprtoken = "5a2c38416725033a0bdddf59c956095d3151ff0b"
 
 # initialization of imageai
 localpath = os.path.dirname(os.path.realpath(__file__))
