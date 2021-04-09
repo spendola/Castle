@@ -45,23 +45,27 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 		if(".jpg" in filename):
 			counter = counter + 1
 			
-			with open(filename, 'rb') as fp:
-				response = requests.post('https://api.platerecognizer.com/v1/plate-reader/', data=dict(regions=regions), files=dict(upload=fp), headers={'Authorization': alprtoken})
-			pprint(response.json())
+			output = str(subprocess.check_output("python3 platereader.py " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
+			print(output)
+			
+			#with open(filename, 'rb') as fp:
+			#	response = requests.post('https://api.platerecognizer.com/v1/plate-reader/', data=dict(regions=regions), files=dict(upload=fp), headers={'Authorization': alprtoken})
+			#pprint(response.json())
+			#platesinfo = json.load(response.json())
 			
 			#outfile = "/home/castle/ftp/" + str(counter) + ".jpg"
 			#output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
 			#if("No license plates found" in output):
 			#	output = ""
 						
-			detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, output_image_path=outfile,  minimum_percentage_probability=30)
-			for eachItem in detection:
-				output = output + eachItem["name"] + " (" + ",".join([str(x) for x in eachItem["box_points"]]) + "); "
+			#detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, output_image_path=outfile,  minimum_percentage_probability=30)
+			#for eachItem in detection:
+			#	output = output + eachItem["name"] + " (" + ",".join([str(x) for x in eachItem["box_points"]]) + "); "
 			 
-			if(len(output) > 1 ):
-				output = output + "[ftplink:" + str(counter) + ".jpg]"
-				print("Sending: " + output)
-				SendActivity("intesla_test", "warning", output)
+			#if(len(output) > 1 ):
+			#	output = output + "[ftplink:" + str(counter) + ".jpg]"
+			#	print("Sending: " + output)
+			#	SendActivity("intesla_test", "warning", output)
 
 				
 				#session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
