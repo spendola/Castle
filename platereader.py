@@ -6,8 +6,6 @@ import sys
 import requests
 from pprint import pprint
 
-print(sys.argv[0])
-print(sys.argv[1])
 
 def SendActivity(client, level, message):
 	try:

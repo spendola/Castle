@@ -24,14 +24,14 @@ alprtoken = "5a2c38416725033a0bdddf59c956095d3151ff0b"
 
 # initialization of imageai
 localpath = os.path.dirname(os.path.realpath(__file__))
-modelpath = os.path.join(localpath, "models/resnet50_coco_best_v2.1.0.h5")
+#modelpath = os.path.join(localpath, "models/resnet50_coco_best_v2.1.0.h5")
 
-detector = imageai.Detection.ObjectDetection()
-detector.setModelTypeAsRetinaNet()
-detector.setModelPath(modelpath)
-detector.loadModel(detection_speed="fast")
-custom_objects = detector.CustomObjects(person=True)
-		
+#detector = imageai.Detection.ObjectDetection()
+#detector.setModelTypeAsRetinaNet()
+#detector.setModelPath(modelpath)
+#detector.loadModel(detection_speed="fast")
+#custom_objects = detector.CustomObjects(person=True)
+	
 counter = 0	
 print("entering listen mode")
 SendActivity("intesla_test", "info", "initializing service")	
@@ -48,29 +48,7 @@ for line in tail ("-f", "/var/log/vsftpd.log", _iter=True):
 			output = str(subprocess.check_output("python3 platereader.py " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
 			print(output)
 			
-			#with open(filename, 'rb') as fp:
-			#	response = requests.post('https://api.platerecognizer.com/v1/plate-reader/', data=dict(regions=regions), files=dict(upload=fp), headers={'Authorization': alprtoken})
-			#pprint(response.json())
-			#platesinfo = json.load(response.json())
+			output = str(subprocess.check_output("python3 humandetector.py " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
+			print(output)
 			
-			#outfile = "/home/castle/ftp/" + str(counter) + ".jpg"
-			#output = str(subprocess.check_output("sudo alpr " + filename, shell=True)).replace("\\t", " ").replace("\\n", ";")
-			#if("No license plates found" in output):
-			#	output = ""
-						
-			#detection = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=filename, output_image_path=outfile,  minimum_percentage_probability=30)
-			#for eachItem in detection:
-			#	output = output + eachItem["name"] + " (" + ",".join([str(x) for x in eachItem["box_points"]]) + "); "
-			 
-			#if(len(output) > 1 ):
-			#	output = output + "[ftplink:" + str(counter) + ".jpg]"
-			#	print("Sending: " + output)
-			#	SendActivity("intesla_test", "warning", output)
-
-				
-				#session = ftplib.FTP("ftp.pendola.net", "castle@pendola.net", "8anstll!")
-				#file = open(outfile, "rb")
-				#session.storbinary("STOR " + str(counter) + ".jpg", file)
-				#file.close()
-				#session.quit()
 
